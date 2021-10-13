@@ -1,7 +1,11 @@
 const dotenv = require("dotenv");
 const express = require("express");
+const mongoose = require('mongoose');
 const cookieParser = require("cookie-parser");
+const cors = require('cors');
+const multer = require('multer');
 const Data = require('./model/userSchema');
+const FileModel = require('./model/fileSchema')
 const app = express();
 
 dotenv.config({ path: './config.env'});
@@ -10,11 +14,7 @@ var gmail = require("./GmailAPi")
 
 app.use(cookieParser());
 app.use(express.json());
-
-
-
 app.use(require('./router/auth'));
-
 
 
 
@@ -48,12 +48,13 @@ app.get('/singin', (req, res) => {
 
 app.get('/read',(req,res) =>{
   const getDocument = async () => {
-      const result = await Data.find()
+      const result = await User.find()
       // console.log(result)
       res.json(result)
   }
   getDocument()
 })
+
 
 
 app.get('/sendEmail',(req,res) => {
@@ -77,7 +78,7 @@ app.get('/checkmail',(req,res) => {
   const readMail = async () => {
     result = await gmail.readInboxContent("UID: "+uid)
     // console.log(result)
-    await Data.updateOne(
+    await User.updateOne(
         {
             'preauth.uid':uid
         }
@@ -90,7 +91,67 @@ readMail()
 })
 
 
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, 'uploads');
+    },
+    filename: function (req, file, cb) {
+        console.log(file);
+        cb(null , file.originalname );
+    }
+});
+
+const upload = multer({ storage: storage })
+
+// Parse JSON
+
+app.use(express.json());
+
+// Use CORS
+
+app.use(cors());
+
+// Serve Static Files
+
+app.use(express.static('uploads'));
+
+// Creating connection to our Mongo Database
+
+
+
+  app.post('/', upload.single('file'), async(req, res, next) => {
+    const uid = req.body.uid
+    const file = req.file
+    console.log("file",file)
+    console.log('uid',uid)
+    if (!file) {
+      const error = new Error('Please upload a file')
+      error.httpStatusCode = 400
+      return next("hey error")
+    }
+      
+      
+      const imagepost= new FileModel({
+        image: file.path,
+        uid:uid
+      })
+      const savedimage= await imagepost.save()
+      res.json(savedimage)
+    
+  })
+
+    app.get('/image',async(req, res)=>{
+   const image = await FileModel.find()
+   res.json(image)
+   
+  })
+
+
+
+
+
 
 app.listen(5000 , () => {
     console.log('server is running');
 })
+

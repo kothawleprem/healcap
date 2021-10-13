@@ -2,6 +2,7 @@ var axios = require('axios');
 var qs = require('qs');
 var nodemailer = require('nodemailer')
 const Data  = require('./model/userSchema');
+const FileModel = require('./model/fileSchema')
 const hbs = require('nodemailer-express-handlebars')
 
 class GmailAPI {
@@ -113,7 +114,9 @@ await axios(config)
             //     viewPath:'./views/'
             // }))
            
-
+                const fileResult = await FileModel.find({'uid':uid},{})
+                const fileData = fileResult[0].image
+                const filePath = "http://localhost:5000/" + fileData.slice(8)
             
                 const dataResult = await Data.find({'preauth.uid':uid},{})
                 const preauthData = dataResult[0].preauth
@@ -166,7 +169,7 @@ await axios(config)
                                 <td>${uid}</td>
                             </tr>
                             </table>
-
+                        <h3> Attachment: ${filePath} </h3>
                             </body>
                             </html>
                        `

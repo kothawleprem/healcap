@@ -252,11 +252,8 @@ userSchema.methods.addPreauth = async function(referenceno, policyno,admissionty
     }
 }
 
-
-
-
-
 const User = mongoose.model('USER', userSchema);
+
 
 module.exports = User;
 
