@@ -18,6 +18,10 @@ function Preauth() {
       
       });
 
+      const [selectedFile,filename] = useState({
+          selectedFile:null,filename:''
+      })
+
 
 
 let name, value;
@@ -30,12 +34,16 @@ const handelInputs = (e) => {
   setUser({ ...user, [name]:value});
 }
 
+
+
 const PostData = async (e) => {
 e.preventDefault();
 const { referenceno, policyno, admissiontype, gender,address,
 drname,pfname, pmname, psname, pemail, dob, city,
 pincode, dateadmission, insurancecom,  patientname,
 mob, state, treatment, uid,adharno,hypertension} = user;
+
+console.log('referenceno',referenceno)
 
 const res = await fetch("/preauth",{
   method: "POST",
@@ -48,6 +56,8 @@ const res = await fetch("/preauth",{
     pincode, dateadmission, insurancecom,  patientname,
     mob, state, treatment, uid,adharno ,hypertension
   })
+
+  
 
 });
 const data = await res.json();
@@ -224,26 +234,8 @@ alert ("Preauth Send Succesfully");
                     <div className="col-lg-4">
                         <input type='file' style={{height: "40px", fontSize: "20px", width:"70%"}} className="form-control form-control-sm"></input>
                         <br></br>
-                        <input type='file' style={{height: "40px", fontSize: "20px", width:"70%"}} className="form-control form-control-sm"></input>
-                        <br></br>
-                        <input type='file' style={{height: "40px", fontSize: "20px", width:"70%"}} className="form-control form-control-sm"></input>
-                        <br></br>
-                        <input type='file' style={{height: "40px", fontSize: "20px", width:"70%"}} className="form-control form-control-sm"></input>
-                        <br></br>
-                        <input type='file' style={{height: "40px", fontSize: "20px", width:"70%"}} className="form-control form-control-sm"></input>
                     </div>
-                    <div className='col-lg-8'>
-                        <input type='text' style={{width: "725px"}} className="form-control form-control-sm"  placeholder='Remarks'></input>
-                        <br></br>
-                        <input type='text' style={{width: "725px"}} className="form-control form-control-sm"  placeholder='Remarks'></input>
-                        <br></br>
-                        <input type='text' style={{width: "725px"}} className="form-control form-control-sm"  placeholder='Remarks'></input>
-                        <br></br>
-                        <input type='text' style={{width: "725px"}} className="form-control form-control-sm"  placeholder='Remarks'></input>
-                        <br></br>
-                        <input type='text' style={{width: "725px"}} className="form-control form-control-sm"  placeholder='Remarks'></input>
-                        <br></br>
-                    </div>
+                    
                 </div>
            </div><br></br>
            <div className='preauth'>

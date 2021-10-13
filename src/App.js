@@ -12,6 +12,7 @@ import Preauth from './components/Preauth';
 import Logout from './components/Logout';
 import { createContext ,useReducer} from 'react';
 import { initialState, reducer } from './reduser/UseReducer';
+import FileUpload from './components/FileUpload';
 export const UserContext = createContext();
 
 
@@ -25,6 +26,7 @@ const Routing = () => {
  
     <Route path="/preauth">
     <Preauth />
+    <FileUpload/>
     </Route>
  
  
