@@ -26,6 +26,10 @@ const Navbar = () => {
         <li className="nav-item">
           <NavLink className="nav-link" to="/preauth">preauth</NavLink>
         </li>
+
+        <li className="nav-item">
+          <NavLink className="nav-link" to="/dashboard">dashboard</NavLink>
+        </li>
        
         <li className="nav-item">
           <NavLink className="nav-link" to="/logout">logout</NavLink>

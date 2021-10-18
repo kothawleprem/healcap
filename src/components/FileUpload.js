@@ -6,14 +6,14 @@ import "../App.css";
 class FileUpload extends Component {
 
     state = {
-        uid: '',
+        referenceno: '',
         selectedFile: null,
         filename: ''
     }
 
     handleChange = (event) => {
         this.setState({
-            uid: document.getElementById('uid').value,
+            referenceno: document.getElementById('referenceno').value,
 
         })
     }
@@ -32,8 +32,8 @@ class FileUpload extends Component {
         event.preventDefault();
 
         let formData = new FormData();
-        console.log('uid',this.state.uid)
-        formData.append('uid', this.state.uid);
+        console.log('referenceno',this.state.referenceno)
+        formData.append('referenceno', this.state.referenceno);
         formData.append('filename', this.state.filename);
         formData.append('file', this.state.selectedFile);
 
@@ -56,9 +56,9 @@ class FileUpload extends Component {
                 <form encType="multipart/form">
                     <input 
                         type="text" 
-                        name="uid" 
-                        id="uid" 
-                        placeholder="Enter UID/reference no." 
+                        name="referenceno" 
+                        id="referenceno" 
+                        placeholder="Enter Reference no." 
                         onChange={this.handleChange}
                     />
                     <br/>

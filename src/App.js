@@ -13,6 +13,8 @@ import Logout from './components/Logout';
 import { createContext ,useReducer} from 'react';
 import { initialState, reducer } from './reduser/UseReducer';
 import FileUpload from './components/FileUpload';
+import Dashboard from './components/Dashboard';
+import Dash from './components/Dash';
 export const UserContext = createContext();
 
 
@@ -29,7 +31,10 @@ const Routing = () => {
     <FileUpload/>
     </Route>
  
- 
+    <Route path="/dashboard">
+    <Dash/>
+    </Route>
+
     <Route path="/about">
     <About />
     </Route>

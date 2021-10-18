@@ -11,17 +11,11 @@ function Preauth() {
 
 
     const [user,setUser] = useState({
-         referenceno:"", policyno:"",admissiontype:"",gender:"",address:"",
-         drname:"" ,pfname:"", pmname:"", psname:"", pemail:"", dob:"", city:"",
-         pincode:"", dateadmission:"", insurancecom:"",  patientname:"",
-         mob:"", state:"", treatment:"", uid:"",adharno:"",hypertension:""
-      
+         referenceno:"",patientname:"", policyno:"",admissiontype:"",gender:"",address:"",
+         drname:"" ,pemail:"", dob:"", city:"",
+         pincode:"", dateadmission:"", insurancecom:"",
+         mob:"", state:"", treatment:"",adharno:"",status:"Pending"
       });
-
-      const [selectedFile,filename] = useState({
-          selectedFile:null,filename:''
-      })
-
 
 
 let name, value;
@@ -35,13 +29,12 @@ const handelInputs = (e) => {
 }
 
 
-
 const PostData = async (e) => {
 e.preventDefault();
-const { referenceno, policyno, admissiontype, gender,address,
-drname,pfname, pmname, psname, pemail, dob, city,
-pincode, dateadmission, insurancecom,  patientname,
-mob, state, treatment, uid,adharno,hypertension} = user;
+const { referenceno,patientname, policyno, admissiontype, gender,address,
+drname, pemail, dob, city,
+pincode, dateadmission, insurancecom,
+mob, state, treatment, adharno,status } = user;
 
 console.log('referenceno',referenceno)
 
@@ -51,10 +44,7 @@ const res = await fetch("/preauth",{
     "Content-Type": "application/json"
   },
   body:JSON.stringify({
-    referenceno, policyno,admissiontype, gender,address,
-    drname,pfname, pmname, psname, pemail, dob, city,
-    pincode, dateadmission, insurancecom,  patientname,
-    mob, state, treatment, uid,adharno ,hypertension
+    referenceno,patientname, policyno, admissiontype, gender,address,drname, pemail, dob, city, pincode, dateadmission, insurancecom, mob, state, treatment, adharno,status
   })
 
   
@@ -85,21 +75,14 @@ alert ("Preauth Send Succesfully");
                 <input type="text" placeholder="Enter reference number" name="referenceno" value={user.referenceno}
                 onChange={handelInputs} class="form-control form-control-sm" required></input>
                 <br></br>
+
                 <label className="LabelClass">Admission Type</label>
-                <select className="form-control form-control-sm" onChange={handelInputs} name="admissiontype" value={user.admissiontype} style={{width: "300px", height: "43px", fontSize: "20px"}}>
-                    <option value = "sender" selected disabled hidden>Select Type</option> 
-                    <option value = "Planned" onChange={handelInputs}>Planned</option> 
-                    <option value = "Emergency" onChange={handelInputs}>Emergency</option> 
-                    <option value = "Accident" onChange={handelInputs}>Accident</option> 
-                    <option value = "Maternity" onChange={handelInputs}>Maternity</option> 
-                </select>
+                <input type="text" placeholder="Enter Admission Type" name="admissiontype" value={user.admissiontype}
+                onChange={handelInputs} class="form-control form-control-sm" required></input>
                 <br></br><br></br><br></br>
                 <label className="LabelClass">Gender</label>
-                <select class="form-control form-control-sm" onChange={handelInputs}  name="gender" value={user.gender} style={{width: "300px", height: "43px", fontSize: "20px"}}>
-                    <option value = "sender" selected disabled hidden>Select Gender</option> 
-                    <option value = "Male" onChange={handelInputs}>Male</option> 
-                    <option value = "Female" onChange={handelInputs}>Female</option>                 
-                </select>
+                <input type="text" placeholder="Enter Gender" name="gender" value={user.gender}
+                onChange={handelInputs} class="form-control form-control-sm" required></input>
                 <br></br>
                 <label className="LabelClass">Address</label>
                 <textarea className="form-control form-control-sm" rows="4" placeholder = "Enter address" name ="address" onChange={handelInputs}  value={user.address} required style={{resize: "None", fontSize: "20px", width: "350px"}}></textarea>
@@ -113,23 +96,17 @@ alert ("Preauth Send Succesfully");
 
            <div className="col-lg-4">
                 <br></br>
+                 <label className="LabelClass">Patient Name</label>
+                <input type="text" placeholder="Enter Patient Name"  name="patientname"  class="form-control form-control-sm"   value={user.patientname}
+                onChange={handelInputs} required></input>
+                <br></br>
                 <label className="LabelClass">Policy Number</label>
                 <input type="text" placeholder="Enter policy no."  name="policyno"  class="form-control form-control-sm"   value={user.policyno}
                 onChange={handelInputs} required></input>
                 <br></br>
-                <label className="LabelClass">Patient</label>
-                <input type="text" class="form-control form-control-sm" placeholder="First Name" name="pfname" onChange={handelInputs}  value={user.pfname} required></input>
-                <div className='row'>
-                    <div className="col-lg-2">
-                      <input type="text" style={{width: "317%"}} class="form-control form-control-sm" placeholder="Middle Name" name="pmname" onChange={handelInputs}  value={user.pmname} required></input>
-                    </div>
-                    <div className="col-lg-2">
-                      <input type="text" style={{width: "322%", marginLeft: "80px"}} class="form-control form-control-sm" placeholder="Surname" name="psname" onChange={handelInputs}  value={user.psname} required></input>
-                    </div>
-                </div>
-                <br></br>   
                 <label  className="LabelClass" style={{marginTop: "10px"}}>D.O.B</label>
-                <input type="date" class="form-control form-control-sm" name="dob" onChange={handelInputs} value={user.dob} style={{width: "300px", height: "43px", fontSize: "20px"}}></input>
+                 <input type="text" placeholder="Enter D.O.B"  name="dob"  class="form-control form-control-sm"   value={user.dob}
+                onChange={handelInputs} required></input>
                 
                 <br></br>
                 <label className="LabelClass">City</label>
@@ -140,29 +117,15 @@ alert ("Preauth Send Succesfully");
 
                 <br></br>
                 <label className="LabelClass">Date of Admission</label>
-                <input type="date" class="form-control form-control-sm" name="dateadmission" onChange={handelInputs}  value={user.dateadmission}  style={{width: "300px", height: "43px", fontSize: "20px"}} required></input>
+                <input type="text" placeholder="Enter Date of Admission"  name="dateadmission"  class="form-control form-control-sm"   value={user.dateadmission}
+                onChange={handelInputs} required></input>
            
            </div> 
 
            <div className="col-lg-4">
                 <br></br>
-                <label className="LabelClass">Insurance Company</label>
-                <select class="form-control form-control-sm" value={user.insurancecom} onChange={handelInputs} name="insurancecom"  style={{width: "300px", height: "43px", fontSize: "20px"}}>
-                    <option value = "sender" selected disabled hidden>Select Company</option> 
-                    <option value = "Birla" onChange={handelInputs} >Aditya Birla Health Insurance Co. Ltd.</option> 
-                    <option value = "Bajaj" onChange={handelInputs}>Bajaj Allianz General Insurance Co. Ltd.</option> 
-                    <option value = "CareHealth" onChange={handelInputs}>Care Health Insurance Ltd.</option>   
-                    <option value = "DHFL" onChange={handelInputs}>DHFL Insurance General Insurance Co. Ltd.</option> 
-                    <option value = "HDFC_ERGO" onChange={handelInputs} >HDFC ERGO General Insurance Co. Ltd.</option> 
-                    <option value = "HDFC_LIFE" onChange={handelInputs} >HDFC Life Insurance Co. Ltd.</option> 
-                    <option value = "ICICI_Lombard"  onChange={handelInputs}>ICICI Lombard General Insurance Co. Ltd.</option> 
-                    <option value = "ICICI_Prudential"  onChange={handelInputs}>ICICI Prudential Life Insurance Co. Ltd.</option> 
-                    <option value = "Reliance_General" onChange={handelInputs} >Reliance General Insurance Co. Ltd.</option> 
-                    <option value = "SBI_General"  onChange={handelInputs}>SBI General Insurance Co. Ltd.</option> 
-                    <option value = "SBI_Life" onChange={handelInputs} >SBI Life Insurance Co. Ltd.</option> 
-                    <option value = "Star"  onChange={handelInputs}>Star Health And Allied Insurance Co. Ltd.</option> 
-                    <option value = "Tata"  onChange={handelInputs}>Tata Aig General Insurance Co. Ltd.</option> 
-                </select>
+                <label className="LabelClass">Insurance Company ID</label>
+                <input type="text" class="form-control form-control-sm" name="insurancecom"  onChange={handelInputs}  value={user.insurancecom} placeholder="Enter insurancecom" required></input>
                 <br></br>
                 <label className="LabelClass">Patient Email</label>
                 <input type="text" className="form-control form-control-sm" placeholder="example@example.com" name="pemail" onChange={handelInputs}  value={user.pemail}  required></input>
@@ -172,72 +135,19 @@ alert ("Preauth Send Succesfully");
                 <input type="text" className="form-control form-control-sm" pattern="^\d{10}$" placeholder="9999999999" name="mob" onChange={handelInputs}  value={user.mob}  required></input>
                 <br></br>
                 <label className="LabelClass">State</label>
-                <select class="form-control form-control-sm"  value={user.state} onChange={handelInputs} name="state" style={{width: "300px", height: "43px", fontSize: "20px"}}>
-                <option value = "state" selected disabled hidden>Select State</option> 
-                    <option value="Andhra Pradesh" onChange={handelInputs}>Andhra Pradesh</option>
-                    <option value="Andaman and Nicobar Islands" onChange={handelInputs}>Andaman and Nicobar Islands</option>
-                    <option value="Arunachal Pradesh" onChange={handelInputs}>Arunachal Pradesh</option>
-                    <option value="Assam" onChange={handelInputs}>Assam</option>
-                    <option value="Bihar" onChange={handelInputs}>Bihar</option>
-                    <option value="Chandigarh" onChange={handelInputs}>Chandigarh</option>
-                    <option value="Chhattisgarh" onChange={handelInputs}>Chhattisgarh</option>
-                    <option value="Dadar and Nagar Haveli" onChange={handelInputs}>Dadar and Nagar Haveli</option>
-                    <option value="Daman and Diu" onChange={handelInputs}>Daman and Diu</option>
-                    <option value="Delhi" onChange={handelInputs}>Delhi</option>
-                    <option value="Lakshadweep" onChange={handelInputs}>Lakshadweep</option>
-                    <option value="Puducherry" onChange={handelInputs}>Puducherry</option>
-                    <option value="Goa" onChange={handelInputs}>Goa</option>
-                    <option value="Gujarat" onChange={handelInputs}>Gujarat</option>
-                    <option value="Haryana" onChange={handelInputs}>Haryana</option>
-                    <option value="Himachal Pradesh" onChange={handelInputs}>Himachal Pradesh</option>
-                    <option value="Jammu and Kashmir" onChange={handelInputs}>Jammu and Kashmir</option>
-                    <option value="Jharkhand" onChange={handelInputs}>Jharkhand</option>
-                    <option value="Karnataka" onChange={handelInputs}> Karnataka</option>
-                    <option value="Kerala" onChange={handelInputs}>Kerala</option>
-                    <option value="Madhya Pradesh" onChange={handelInputs}>Madhya Pradesh</option>
-                    <option value="Maharashtra" onChange={handelInputs}>Maharashtra</option>
-                    <option value="Manipur" onChange={handelInputs}>Manipur</option>
-                    <option value="Meghalaya" onChange={handelInputs}>Meghalaya</option>
-                    <option value="Mizoram" onChange={handelInputs}>Mizoram</option>
-                    <option value="Nagaland" onChange={handelInputs}>Nagaland</option>
-                    <option value="Odisha" onChange={handelInputs}>Odisha</option>
-                    <option value="Punjab" onChange={handelInputs}>Punjab</option>
-                    <option value="Rajasthan" onChange={handelInputs}>Rajasthan</option>
-                    <option value="Sikkim" onChange={handelInputs}>Sikkim</option>
-                    <option value="Tamil Nadu" onChange={handelInputs}>Tamil Nadu</option>
-                    <option value="Telangana" onChange={handelInputs}>Telangana</option>
-                    <option value="Tripura" onChange={handelInputs}>Tripura</option>
-                    <option value="Uttar Pradesh" onChange={handelInputs}>Uttar Pradesh</option>
-                    <option value="Uttarakhand" onChange={handelInputs}>Uttarakhand</option>
-                    <option value="West Bengal" onChange={handelInputs}>West Bengal</option>
-                </select>
+                <input type="text" class="form-control form-control-sm" name="state"  onChange={handelInputs}  value={user.state} placeholder="Enter State" required></input>
                 <br></br>
                 <label className="LabelClass">Treatment</label>
-                <select class="form-control form-control-sm" name="treatment"  onChange={handelInputs} value={user.treatment} style={{width: "300px", height: "43px", fontSize: "20px"}}>
-                    <option value = "Treatment" selected disabled hidden>Select Treatment</option> 
-                    <option value = "Cancer" onChange={handelInputs}>Cancer</option> 
-                    <option value = "Medical" onChange={handelInputs}>Medical</option> 
-                    <option value = "Surgery with Medical" onChange={handelInputs}>Surhery with Medical</option>
-                    <option value = "Surgical" onChange={handelInputs}>Surgical</option> 
-                    <option value = "Trauma" onChange={handelInputs}>Trauma</option> 
-                </select> 
+                <input type="text" class="form-control form-control-sm" name="treatment"  onChange={handelInputs}  value={user.treatment} placeholder="Enter Treatment" required></input>
+                <br></br>
+                 
                 <br></br>
                 <label className="LabelClass">Aadhar Card No.</label>
                 <input type='text'  className="form-control form-control-sm" placeholder='Enter Aadhar Card Number'  name="adharno" onChange={handelInputs}  value={user.adharno} required /> 
             </div>
             <br></br><br></br>
            </div> <br></br>
-           <div className='preauth'>
-               <h1 style={{fontSize: "30px"}}><center>Attachment Details</center></h1><br></br>
-               <h5>Upload Files/Reports/ID Details(Scanned PDF and JPG files)</h5><br></br>
-                <div className='row'>
-                    <div className="col-lg-4">
-                        <input type='file' style={{height: "40px", fontSize: "20px", width:"70%"}} className="form-control form-control-sm"></input>
-                        <br></br>
-                    </div>
-                    
-                </div>
-           </div><br></br>
+         
            <div className='preauth'>
                 <h2><center>Past Illness Details</center></h2><br></br>
                 <h5>Past Illness/Chronic Details</h5><br></br>
