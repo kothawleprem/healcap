@@ -10,7 +10,7 @@ class GmailAPI {
         var data = qs.stringify({
   'client_id': '880517164838-alpq40bb55eu75ldpjtqk2r4ve7ehnqc.apps.googleusercontent.com',
   'client_secret': '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',
-  'refresh_token': '1//0gSe6BCkDQ0FKCgYIARAAGBASNwF-L9IrSKJQiDIWuZL7U7fbTK5FQJ0T1x3qF_UdOHZMv3zTv3G7BGu5gyuOaVeO0zg2HlpGp_M',
+  'refresh_token': '1//0g6fiXAWqx99OCgYIARAAGBASNwF-L9IrBEYtHBR2o_IRy9hVcyX_gKVNoBz_9rKGK4uG3MEVGVl9bBbo5b5PsPMXEitacnkI7WA',
   'grant_type': 'refresh_token' 
 });
 var config = {
@@ -49,7 +49,7 @@ await axios(config)
 
             await axios(config1)
             .then(async function (response) {
-            // console.log("Searched Results:" + JSON.stringify(response.data));
+            console.log("Searched Results:" + JSON.stringify(response.data));
             threadId = await response.data['messages'][0].id
             // console.log("ThreadId="+threadId)
             })
@@ -92,7 +92,7 @@ await axios(config)
         return decodedStr
     }
 
-    sendGmail = async (uid) => {
+    sendGmail = async (referenceno) => {
         try{
             const accessToken = await this.getAccessToken()
             console.log(accessToken)
@@ -103,37 +103,71 @@ await axios(config)
                     user:'healcaptechnologies@gmail.com',
                     clientId:'880517164838-alpq40bb55eu75ldpjtqk2r4ve7ehnqc.apps.googleusercontent.com',
                     clientSecret:'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',
-                    refreshToken:"1//0gSe6BCkDQ0FKCYIARAAGBASNwF-L9IrSKJQiDIWuZL7U7fbTK5FQJ0T1x3qF_UdOHZMv3zTv3G7BGu5gyuOaVeO0zg2HlpGp_M",
+                    refreshToken:"1//0g6fiXAWqx99OCgYIARAAGBASNwF-L9IrBEYtHBR2o_IRy9hVcyX_gKVNoBz_9rKGK4uG3MEVGVl9bBbo5b5PsPMXEitacnkI7WA",
                     accessToken:accessToken
                 }
             })
-            
+            // http://localhost/?code=4/0AX4XfWhEtYqR8aCG8nywfVX5KjAE-tQEXgbYuphjLjSXBAofIet-AL6P0fMTWPyaZ7a0RA&scope=https://mail.google.com/
             // transport.use('compile',hbs({
             //     viewEngine:'express-handlebars',
             //     defaultLayout: false,
             //     viewPath:'./views/'
             // }))
-           
-                const fileResult = await FileModel.find({'uid':uid},{})
+                console.log('referenceno',referenceno)
+                const fileResult = await FileModel.find({'referenceno:':referenceno})
+                console.log('fileresult',fileResult)
                 const fileData = fileResult[0].image
                 const filePath = "http://localhost:5000/" + fileData.slice(8)
-            
-                const dataResult = await Data.find({'preauth.uid':uid},{})
+                console.log('filePath',filePath)
+                const dataResult = await Data.find({'preauth.referenceno':referenceno},{})
                 const preauthData = dataResult[0].preauth
                 // console.log(preauthData)
-                var agencyid = ""
+                var insurancecom = ""
+                var hname = ""
+                var policyno = ""
+                var admissiontype = ""
+                var gender = ""
+                var address = ""
+                var drname= ""
+                var patientname = ""
+                var pemail =""
+                var dob = ""
+                var city = ""
+                var pincode = ""
+                var dateadmission = ""
+                var mob = ""
+                var state = ""
+                var treatment = ""
+                var adharno = ""
+
                 for(let i=0;i<preauthData.length;i++)
                 {
-                    console.log(preauthData[i].uid)
-                    if(preauthData[i].uid == uid)
+                    console.log(preauthData[i].referenceno)
+                    if(preauthData[i].referenceno == referenceno)
                     {
-                        agencyid = preauthData[i].agencyid
-                        console.log(agencyid)
+                        hname = dataResult[0].name
+                        insurancecom = preauthData[i].insurancecom
+                        policyno = preauthData[i].policyno
+                        admissiontype = preauthData[i].admissiontype
+                        gender = preauthData[i].gender
+                        address = preauthData[i].address
+                        drname= preauthData[i].drname
+                        patientname = preauthData[i].patientname
+                        pemail = preauthData[i].pemail
+                        dob = preauthData[i].dob
+                        city = preauthData[i].city
+                        pincode = preauthData[i].pincode
+                        dateadmission = preauthData[i].dateadmission
+                        mob = preauthData[i].mob
+                        state = preauthData[i].state
+                        treatment = preauthData[i].treatment
+                        adharno = preauthData[i].adharno
+
                     }
                 }
                 var toemail = ""
                 var htmlTemplate = ''
-                if (agencyid == 1){
+                if (insurancecom == "1"){
                 toemail = "kothawleprem@gmail.com"
                 htmlTemplate = `
                     <!DOCTYPE html>
@@ -158,26 +192,90 @@ await axios(config)
                             </style>
                         </head>
                         <body>
-                        <h2>From {Hospital Name}, for ${uid}</h2>
+                        <h2>From ${hname}, for ${referenceno}</h2>
                         <table>
                             <tr>
                                 <th>Title</th>
                                 <th>Description</th>
                             </tr>
                             <tr>
-                                <td>{Patient UID}</td>
-                                <td>${uid}</td>
+                                <td>Patient Reference Number</td>
+                                <td>${referenceno}</td>
                             </tr>
-                            </table>
-                        <h3> Attachment: ${filePath} </h3>
-                            </body>
-                            </html>
+                            <tr>
+                                <td>Patient Name</td>
+                                <td>${patientname}</td>
+                            </tr>
+                            <tr>
+                                <td>Gender</td>
+                                <td>${gender}</td>
+                            </tr>
+                            <tr>
+                                <td>Policy Number</td>
+                                <td>${policyno}</td>
+                            </tr>
+                            <tr>
+                                <td>Doctor Name</td>
+                                <td>${drname}</td>
+                            </tr>
+                            <tr>
+                                <td>Patient Email</td>
+                                <td>${pemail}</td>
+                            </tr>
+                            <tr>
+                                <td>Date of Birth</td>
+                                <td>${dob}</td>
+                            </tr>
+                             <tr>
+                                <td>Address</td>
+                                <td>${address}</td>
+                            </tr>
+                            <tr>
+                                <td>City</td>
+                                <td>${city}</td>
+                            </tr>
+                            <tr>
+                                <td>Pincode</td>
+                                <td>${pincode}</td>
+                            </tr>
+                            <tr>
+                                <td>State</td>
+                                <td>${state}</td>
+                            </tr>
+                            <tr>
+                                <td>Mobile Number</td>
+                                <td>${mob}</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>Date of Admission</td>
+                                <td>${dateadmission}</td>
+                            </tr>
+                            <tr>
+                                <td>Type of Admission</td>
+                                <td>${admissiontype}</td>
+                            </tr>
+                            <tr>
+                                <td>Treatment</td>
+                                <td>${treatment}</td>
+                            </tr>
+                            <tr>
+                                <td>Aadhar Number</td>
+                                <td>${adharno}</td>
+                            </tr>
+                            <tr>
+                                <td>Attachment</td>
+                                <td>${filePath}</td>
+                            </tr>
+                        </table>
+                        </body>
+                    </html>
                        `
                 }
                 else{
                     toemail = "techbayindia@gmail.com"
                     htmlTemplate = `
-                    <!DOCTYPE html>
+                                       <!DOCTYPE html>
                     <html>
                         <head>
                             <style>
@@ -199,20 +297,83 @@ await axios(config)
                             </style>
                         </head>
                         <body>
-                        <h2>From {Hospital Name}, for ${uid}</h2>
+                        <h2>From ${hname}, for ${referenceno}</h2>
                         <table>
                             <tr>
                                 <th>Title</th>
                                 <th>Description</th>
                             </tr>
                             <tr>
-                                <td>{Patient UID}</td>
-                                <td>${uid}</td>
+                                <td>Patient Reference Number</td>
+                                <td>${referenceno}</td>
                             </tr>
-                            </table>
-
-                            </body>
-                            </html>
+                            <tr>
+                                <td>Patient Name</td>
+                                <td>${pfname}</td>
+                            </tr>
+                            <tr>
+                                <td>Gender</td>
+                                <td>${gender}</td>
+                            </tr>
+                            <tr>
+                                <td>Policy Number</td>
+                                <td>${policyno}</td>
+                            </tr>
+                            <tr>
+                                <td>Doctor Name</td>
+                                <td>${drname}</td>
+                            </tr>
+                            <tr>
+                                <td>Patient Email</td>
+                                <td>${pemail}</td>
+                            </tr>
+                            <tr>
+                                <td>Date of Birth</td>
+                                <td>${dob}</td>
+                            </tr>
+                             <tr>
+                                <td>Address</td>
+                                <td>${address}</td>
+                            </tr>
+                            <tr>
+                                <td>City</td>
+                                <td>${city}</td>
+                            </tr>
+                            <tr>
+                                <td>Pincode</td>
+                                <td>${pincode}</td>
+                            </tr>
+                            <tr>
+                                <td>State</td>
+                                <td>${state}</td>
+                            </tr>
+                            <tr>
+                                <td>Mobile Number</td>
+                                <td>${mob}</td>
+                            </tr>
+                            <tr>
+                                <td>Date of Admission</td>
+                                <td>${dateadmission}</td>
+                            </tr>
+                            <tr>
+                                <td>Type of Admission</td>
+                                <td>${admissiontype}</td>
+                            </tr>
+                            <tr>
+                                <td>Treatment</td>
+                                <td>${treatment}</td>
+                            </tr>
+                            <tr>
+                                <td>Aadhar Number</td>
+                                <td>${adharno}</td>
+                            </tr>
+                            <tr>
+                                <td>Attachment</td>
+                                <td>${filePath}</td>
+                            </tr>
+                        </table>
+                        </body>
+                    </html>
                        `
                 }
                 // console.log('toemail',toemail)
@@ -220,7 +381,7 @@ await axios(config)
                 const mailOptions = {
                 from:'HealCap India <healcaptechnologies@gmail.com>',
                 to: toemail,
-                subject:`Hello Company ${agencyid}`,
+                subject:`Hello Company ${insurancecom}`,
                 html:htmlTemplate
 
             }

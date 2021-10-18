@@ -15,7 +15,7 @@ var gmail = require("./GmailAPi")
 app.use(cookieParser());
 app.use(express.json());
 app.use(require('./router/auth'));
-
+app.use(cors())
 
 
 app.get('/', (req, res) => {
@@ -45,11 +45,13 @@ app.get('/singin', (req, res) => {
 }
 );
 
-
+// `http://localhost:5000/read?name=${name}`
 app.get('/read',(req,res) =>{
+  const name = req.query.name
   const getDocument = async () => {
-      const result = await User.find()
-      // console.log(result)
+      const dataResult = await Data.find({name:name})
+      const preauthData = dataResult[0]
+      const result = preauthData['preauth']
       res.json(result)
   }
   getDocument()
@@ -58,11 +60,11 @@ app.get('/read',(req,res) =>{
 
 
 app.get('/sendEmail',(req,res) => {
-    const uid = req.query.uid
-    console.log(uid)
+    const referenceno = req.query.referenceno
+    console.log(referenceno)
     const sendMail = async () => {
         console.log('inSendMail')
-    await gmail.sendGmail(uid).then(
+    await gmail.sendGmail(referenceno).then(
     result => console.log('Email sent..',result)
     ).catch((error)=> console.log(error))
     res.send('OK')
@@ -74,15 +76,15 @@ sendMail()
 
 var status = ""
 app.get('/checkmail',(req,res) => {
-  const uid = req.query.uid
+  const referenceno = req.query.referenceno
   const readMail = async () => {
-    result = await gmail.readInboxContent("UID: "+uid)
+    result = await gmail.readInboxContent("Reference: "+referenceno)
     // console.log(result)
-    await User.updateOne(
+    await Data.updateOne(
         {
-            'preauth.uid':uid
+            'preauth.referenceno':referenceno
         }
-        ,{$set:{'preauth.$.state':result}})
+        ,{$set:{'preauth.$.status':result}})
     res.json('ok')
   }  
 //   res.send('updated')
@@ -120,10 +122,10 @@ app.use(express.static('uploads'));
 
 
   app.post('/', upload.single('file'), async(req, res, next) => {
-    const uid = req.body.uid
+    const referenceno = req.body.referenceno
     const file = req.file
     console.log("file",file)
-    console.log('uid',uid)
+    console.log('referenceno',referenceno)
     if (!file) {
       const error = new Error('Please upload a file')
       error.httpStatusCode = 400
@@ -133,7 +135,7 @@ app.use(express.static('uploads'));
       
       const imagepost= new FileModel({
         image: file.path,
-        uid:uid
+        referenceno:referenceno
       })
       const savedimage= await imagepost.save()
       res.json(savedimage)

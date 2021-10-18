@@ -58,18 +58,6 @@ const userSchema = new mongoose.Schema({
                 type:Number,
                 require:true
             },
-            pfname:{
-                type:String,
-                require:true
-            },
-            pmname:{
-                type:String,
-                require:true
-            },
-            psname:{
-                type:String,
-                require:true
-            },
             pemail:{
                 type:String,
                 require:true
@@ -120,6 +108,10 @@ const userSchema = new mongoose.Schema({
             },
             agencyid:{
                 type:Number,
+                require:true
+            },
+            status:{
+                type:String,
                 require:true
             }
         }
@@ -239,12 +231,12 @@ userSchema.methods.addMessage = async function(name, email, phone, message){
 userSchema.methods.addPreauth = async function(referenceno, policyno,admissiontype,gender,address,
     drname,pfname, pmname, psname, pemail, dob, city,
     pincode, dateadmission, insurancecom,  patientname,
-    mob, state, treatment, uid,adharno){
+    mob, state, treatment, uid,adharno,status){
     try{
         this.preauth = this.preauth.concat({referenceno, policyno,admissiontype,gender,address,
             drname,pfname, pmname, psname, pemail, dob, city,
             pincode, dateadmission, insurancecom,  patientname,
-            mob, state, treatment, uid,adharno})
+            mob, state, treatment, uid,adharno,status})
         await this.save();
         return this.preauth;
     } catch (error) {

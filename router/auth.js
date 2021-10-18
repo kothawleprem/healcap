@@ -96,7 +96,7 @@ router.post('/signin', async (req, res) => {
 //about us 
  
  router.get("/about", authenticate, (req, res) => {
-        console.log('Hello about World ');
+        // console.log('Hello about World ');
          res.send(req.rootUser);
       });  
 

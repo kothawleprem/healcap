@@ -5,7 +5,7 @@ const dataSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-    uid:{
+    referenceno:{
       type:String,
       required: true
     }
