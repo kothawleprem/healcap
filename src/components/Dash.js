@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useHistory } from 'react-router-dom';
 import Datatable from './Datatable'
 import ExportCSV from './ExportCSV';
+import PieChart from './PieChart';
 
 
 function Dash() {
@@ -54,6 +55,7 @@ function Dash() {
         <div>
             <ExportCSV data={data}/>
             <Datatable data={data}/>
+            <PieChart/>
 
         </div>
     )

@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react'
+import './SendMail.css'
 
 import axios from 'axios'
 
@@ -16,7 +17,7 @@ const  CheckMail = () => {
                 console.log('waiting')
             }
             else{
-                            axios.get(`http://localhost:5000/checkmail?referenceno=${referenceno}`)
+                axios.get(`http://localhost:5000/checkmail?referenceno=${referenceno}`)
             .then(response => {
                 setResponse(response.data)
             })
@@ -38,27 +39,27 @@ const  CheckMail = () => {
 
     return (
         <div>
-          
-
-            <div class="card" >
-  <div class="card-body">
-    <h3 class="card-title">Enter reference number to check email and update status.</h3>
-    <div class="input-group mb-3">
-  <input type="text" class="form-control"  ref={textInput} aria-describedby="button-addon2"/>
-  <button class="btn btn-outline-secondary" onClick={onOnclickHandler} type="button" id="button-addon2">Submit</button>
-</div>
-  {!response ? (
-                <p>Did not check Mail Yet!</p>
-            ) : (
-                 <div className="result">
-                <p>{response}</p>
+        <br /><br /><br /><br /><br /><br />
+            <div class="container" >
+            
+                <div class="card-body">
+                <center>
+                    <h3 class="title alert alert-primary">Enter Reference Number to Check E-mail and Update Status.</h3>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control"  ref={textInput} aria-describedby="button-addon2"/>
+                        <button class="btn btn-outline-primary" onClick={onOnclickHandler} type="button" id="button-addon2">Submit</button>
+                    </div>
+            {!response ? (
+                            <p>Did not check Mail Yet!</p>
+                        ) : (
+                            <div className="result">
+                            <p>{response}</p>
+                            </div>
+                        )}
+                    </center>
                 </div>
-            )}
-           
+            </div>
         </div>
-    
-  </div>
-</div>
 
     )
 }

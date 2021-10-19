@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react'
+import './SendMail.css'
 
 import axios from 'axios'
 
@@ -31,27 +32,29 @@ const  SendMail = () => {
 
     return (
         <div>
-          
+            <div class="container" >
+            <br /><br />
 
-            <div class="card" >
-  <div class="card-body">
-    <h3 class="card-title">Enter reference number to send email.</h3>
-    <div class="input-group mb-3">
-  <input type="text" class="form-control"  ref={textInput} aria-describedby="button-addon2"/>
-  <button class="btn btn-outline-secondary" onClick={onOnclickHandler} type="button" id="button-addon2">Submit</button>
-</div>
-  {!response ? (
-                <p>Did not send Mail :(</p>
-            ) : (
-                 <div className="result">
-                <p>{response}</p>
+                <div class="card-body">
+                <center><h3 class="title alert alert-primary">Enter Reference number to Send E-mail.</h3>
+                    
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control"  ref={textInput} aria-describedby="button-addon2"/>
+                        <button class="btn btn-outline-primary" onClick={onOnclickHandler} type="button" id="button-addon2">Submit</button>
+                    </div>
+                {!response ? (
+                                <p>Did not send Mail :(</p>
+                            ) : (
+                                <div className="result">
+                                <p>{response}</p>
+                                </div>
+                            )}  
+                    </center>
                 </div>
-            )}
-           
-        </div>
-    
-  </div>
-</div>
+             </div>
+            </div>
+              
+
 
     )
 }
