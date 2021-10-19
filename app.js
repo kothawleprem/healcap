@@ -60,6 +60,39 @@ app.get('/read',(req,res) =>{
   getDocument()
 })
 
+app.get('/stats',(req,res) => {
+  const name = req.query.name
+  const getStats = async () => {
+    const dataResult = await Data.find({name:name})
+    const preauthData = dataResult[0]
+    const result = preauthData['preauth']
+    var accepted = 0
+    var pending = 0
+    var nodata = 0
+    for(let i=0;i<result.length;i++){
+      let val = result[i].status
+      console.log(val)
+      if(val == undefined){
+        nodata = nodata + 1
+      }
+      else if(val.includes('Accepted')){
+        accepted = accepted + 1
+      }
+      else if(val.includes('Pending')){
+        pending = pending + 1
+      }
+      else{
+        nodata = nodata + 1
+      }
+    }
+    res.json({
+      'accepted':accepted,
+      'pending':pending,
+      'nodata':nodata
+    })
+  }
+  getStats()
+})
 
 
 app.get('/sendEmail',(req,res) => {
