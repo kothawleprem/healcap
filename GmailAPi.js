@@ -51,7 +51,7 @@ await axios(config)
             .then(async function (response) {
             console.log("Searched Results:" + JSON.stringify(response.data));
             threadId = await response.data['messages'][0].id
-            // console.log("ThreadId="+threadId)
+            console.log("ThreadId="+threadId)
             })
             .catch(function (error) {
             console.log(error);
@@ -77,7 +77,7 @@ await axios(config)
             data = await response.data
         })
         .catch(function (error) {
-        console.log(error);
+        console.log('error',error);
         });
         return data
 
@@ -86,6 +86,7 @@ await axios(config)
     readInboxContent = async (searchItem)=> {
         const threadId = await this.searchGmail(searchItem)
         const message = await this.readGmailContent(threadId) 
+        console.log('message',message)
         const encodedMessage = await message.payload['parts'][0].body.data
         const decodedStr = Buffer.from(encodedMessage,"base64").toString("ascii")
         // console.log(decodedStr)
@@ -121,6 +122,7 @@ await axios(config)
                 console.log('filePath',filePath)
                 const dataResult = await Data.find({'preauth.referenceno':referenceno},{})
                 const preauthData = dataResult[0].preauth
+                
                 // console.log(preauthData)
                 var insurancecom = ""
                 var hname = ""
@@ -166,10 +168,8 @@ await axios(config)
                     }
                 }
                 var toemail = ""
-                var htmlTemplate = ''
-                if (insurancecom == "1"){
-                toemail = "kothawleprem@gmail.com"
-                htmlTemplate = `
+                var companyName = ""
+                var htmlTemplate = `
                     <!DOCTYPE html>
                     <html>
                         <head>
@@ -271,140 +271,40 @@ await axios(config)
                         </body>
                     </html>
                        `
+                if (insurancecom == "1"){
+                toemail = "hdfchealcap@gmail.com"
+                companyName = "HDFC Insurance"
+                }
+                else if (insurancecom == "2"){
+                toemail = "icicihealcap@gmail.com"
+                companyName = "ICICI Insurance"
+                }
+                else if (insurancecom == "3"){
+                toemail = "bajajhealcap@gmail.com"
+                companyName = "Bajaj Insurance"
+                }
+                else if (insurancecom == "4"){
+                toemail = "starhealcap@gmail.com"
+                companyName = "STAR Insurance"
                 }
                 else{
-                    toemail = "techbayindia@gmail.com"
-                    htmlTemplate = `
-                                       <!DOCTYPE html>
-                    <html>
-                        <head>
-                            <style>
-                                table {
-                                    font-family: arial, sans-serif;
-                                    border-collapse: collapse;
-                                    width: 100%;
-                                    }
-
-                                td, th {
-                                    border: 1px solid #dddddd;
-                                    text-align: left;
-                                    padding: 8px;
-                                    }
-
-                                tr:nth-child(even) {
-                                    background-color: #dddddd;
-                                    }
-                            </style>
-                        </head>
-                        <body>
-                        <h2>From ${hname}, for ${referenceno}</h2>
-                        <table>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                            </tr>
-                            <tr>
-                                <td>Patient Reference Number</td>
-                                <td>${referenceno}</td>
-                            </tr>
-                            <tr>
-                                <td>Patient Name</td>
-                                <td>${pfname}</td>
-                            </tr>
-                            <tr>
-                                <td>Gender</td>
-                                <td>${gender}</td>
-                            </tr>
-                            <tr>
-                                <td>Policy Number</td>
-                                <td>${policyno}</td>
-                            </tr>
-                            <tr>
-                                <td>Doctor Name</td>
-                                <td>${drname}</td>
-                            </tr>
-                            <tr>
-                                <td>Patient Email</td>
-                                <td>${pemail}</td>
-                            </tr>
-                            <tr>
-                                <td>Date of Birth</td>
-                                <td>${dob}</td>
-                            </tr>
-                             <tr>
-                                <td>Address</td>
-                                <td>${address}</td>
-                            </tr>
-                            <tr>
-                                <td>City</td>
-                                <td>${city}</td>
-                            </tr>
-                            <tr>
-                                <td>Pincode</td>
-                                <td>${pincode}</td>
-                            </tr>
-                            <tr>
-                                <td>State</td>
-                                <td>${state}</td>
-                            </tr>
-                            <tr>
-                                <td>Mobile Number</td>
-                                <td>${mob}</td>
-                            </tr>
-                            <tr>
-                                <td>Date of Admission</td>
-                                <td>${dateadmission}</td>
-                            </tr>
-                            <tr>
-                                <td>Type of Admission</td>
-                                <td>${admissiontype}</td>
-                            </tr>
-                            <tr>
-                                <td>Treatment</td>
-                                <td>${treatment}</td>
-                            </tr>
-                            <tr>
-                                <td>Aadhar Number</td>
-                                <td>${adharno}</td>
-                            </tr>
-                            <tr>
-                                <td>Attachment</td>
-                                <td>${filePath}</td>
-                            </tr>
-                        </table>
-                        </body>
-                    </html>
-                       `
+                    toemail = "reliancehealcap@gmail.com"
+                    companyName = "Reliance Insurance"
                 }
-                // console.log('toemail',toemail)
          
                 const mailOptions = {
                 from:'HealCap India <healcaptechnologies@gmail.com>',
                 to: toemail,
-                subject:`Hello Company ${insurancecom}`,
+                subject:`Hello ${companyName}, HealCap here!`,
                 html:htmlTemplate
 
             }
             const result = await transport.sendMail(mailOptions)
              return result
             
-    
-            
-            // const mailOptions = {
-            //     from:'HealCap India <healcaptechnologies@gmail.com>',
-            //     to:toemail,
-            //     subject:"Hello user",
-            //     text:textmail
-                
-            // }
-
-            
-            // const result = await transport.sendMail(mailOptions)
-           
-            // return result
             
         }catch(error){
-            return error
+            return 'Invalid Reference Id'
         }
     }
 }

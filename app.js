@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
 const multer = require('multer');
+
+
 const Data = require('./model/userSchema');
 const FileModel = require('./model/fileSchema')
 const app = express();
@@ -16,6 +18,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(require('./router/auth'));
 app.use(cors())
+
 
 
 app.get('/', (req, res) => {
@@ -61,15 +64,22 @@ app.get('/read',(req,res) =>{
 
 app.get('/sendEmail',(req,res) => {
     const referenceno = req.query.referenceno
-    console.log(referenceno)
-    const sendMail = async () => {
+    console.log('referenceno1',typeof(referenceno))
+    if(referenceno === 'null')
+    {
+      console.log('wait')
+      res.send('Enter Valid Reference Number')
+    }
+    else{
+          const sendMail = async () => {
         console.log('inSendMail')
     await gmail.sendGmail(referenceno).then(
-    result => console.log('Email sent..',result)
+    result => console.log('Status: ',result)
     ).catch((error)=> console.log(error))
-    res.send('OK')
+    res.json('OK')
 }
 sendMail()
+    }
 })
 
 
@@ -77,6 +87,7 @@ sendMail()
 var status = ""
 app.get('/checkmail',(req,res) => {
   const referenceno = req.query.referenceno
+  console.log('checking for',referenceno)
   const readMail = async () => {
     result = await gmail.readInboxContent("Reference: "+referenceno)
     // console.log(result)
@@ -85,7 +96,7 @@ app.get('/checkmail',(req,res) => {
             'preauth.referenceno':referenceno
         }
         ,{$set:{'preauth.$.status':result}})
-    res.json('ok')
+    res.json('Status Updated')
   }  
 //   res.send('updated')
 readMail()

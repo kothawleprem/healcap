@@ -128,7 +128,7 @@ router.post('/contact', authenticate, async(req, res) => {
 });
 
  router.get('/getdata', authenticate , (req, res) => {
-    console.log('hello contact')
+    console.log('Authenticated')
     res.send(req.rootUser);
  });
 
