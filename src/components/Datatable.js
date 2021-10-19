@@ -18,57 +18,23 @@ function Datatable({data}) {
                         {patient.referenceno}
                     </td>
                     <td>
-                        {patient.admissiontype}
-                    </td>
-                    <td>
-                        {patient.gender}
-                    </td>
-                    <td>
-                        {patient.address}
-                    </td>
-                    <td>
-                        {patient.drname}
-                    </td>
-                    <td>
-                        {patient.policyno}
-                    </td>
-
-                    <td>
-                        {patient.pemail}
-                    </td>
-                    <td>
-                        {patient.dob}
-                    </td>
-                    <td>
-                        {patient.city}
-                    </td>
-                    <td>
-                        {patient.pincode}
-                    </td>
-                    <td>
-                        {patient.dateadmission}
-                    </td>
-                    <td>
-                        {patient.insurancecom}
+                        {patient.status}
                     </td>
                     <td>
                         {patient.patientname}
                     </td>
                     <td>
+                        {patient.insurancecom}
+                    </td>
+                     <td>
+                        {patient.dateadmission}
+                    </td>
+                    {/* <td>
                         {patient.mob}
-                    </td>
-                    <td>
-                        {patient.state}
-                    </td>
-                    <td>
-                        {patient.treatment}
-                    </td>
-                    <td>
-                        {patient.adharno}
-                    </td>
-                    <td>
-                        {patient.status}
-                    </td>
+                    </td> */}
+                    {/* <td>
+                        {patient.pemail}
+                    </td> */}
                 </tr>
             )
         })
@@ -77,7 +43,21 @@ function Datatable({data}) {
         <Table >
             <thead>
                 <tr>
-                {renderTableHearder()}
+                <th>
+                    Reference No
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Patient Name
+                </th>
+                <th>
+                    Insurance Company Id
+                </th>
+                <th>
+                    Date of Admission
+                </th>
                 </tr>
             </thead>
                 <tbody>

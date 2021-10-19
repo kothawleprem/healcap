@@ -15,6 +15,8 @@ import { initialState, reducer } from './reduser/UseReducer';
 import FileUpload from './components/FileUpload';
 import Dashboard from './components/Dashboard';
 import Dash from './components/Dash';
+import SendMail from './components/SendMail'
+import CheckMail from './components/CheckMail';
 export const UserContext = createContext();
 
 
@@ -28,11 +30,15 @@ const Routing = () => {
  
     <Route path="/preauth">
     <Preauth />
-    <FileUpload/>
     </Route>
  
     <Route path="/dashboard">
     <Dash/>
+    </Route>
+
+    <Route path='/utils'>
+    <SendMail/>
+    <CheckMail/>
     </Route>
 
     <Route path="/about">

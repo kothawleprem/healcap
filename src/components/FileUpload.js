@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from 'axios';
-import "../App.css";
+
 
 
 class FileUpload extends Component {
@@ -46,24 +46,37 @@ class FileUpload extends Component {
             console.log(res.data);
             console.log(this.state.filename);
             console.log(formData);
+            alert ("File Uploaded Succesfully");
         })
     }
 
     render () {
         return (
             <div className="formDiv">
-                <h2>Add Attachments</h2>
+            <br/><br/>
+                <div className="preauthtitle">
+                    <div class="alert alert-primary" role="alert" align="center">
+                        <strong>Add Attachments</strong>
+                    </div>
+                </div><br/><br/>
+                
                 <form encType="multipart/form">
+                    <center>
                     <input 
+                        className="form-control form-control-sm"
+                        style={{width: "350px"}}
                         type="text" 
                         name="referenceno" 
                         id="referenceno" 
                         placeholder="Enter Reference no." 
                         onChange={this.handleChange}
                     />
+                    </center>
                     <br/>
                     <center>
                     <input 
+                        className="form-control form-control-sm"
+                        style={{width: "350px"}}
                         type="file" 
                         name="file" 
                         id="file" 
@@ -71,8 +84,11 @@ class FileUpload extends Component {
                         onChange={this.fileSelectedHandler}
                     />
                     </center>
-                    <br/>
-                    <button className="submitBtn" type="submit" onClick={this.fileUploadHandler}>Add Files</button>
+                    <br/><br/>
+                    <div className="filebutt" style={{marginLeft: "550px"}}>
+                        <button type="button" value="submit" onClick={this.fileUploadHandler} class="btn btn-primary" style={{borderRadius: "30px",fontSize: "20px",width: "150px"}}> <strong>Add Files</strong></button>
+                    </div>
+                    
                 </form>
             </div>
         )
